@@ -6,11 +6,26 @@
 <p><strong>Año de Ingreso:</strong> 2023</p>
 
 <h3>Quinto Semestre</h3>
-<ul>
-    <li>CAI-500 CONTROL Y AUTOMATIZACIÓN INDUSTRIAL II</li>
-    <li>TEW-500 TECNOLOGÍA WEB II</li>
-    <li>SII-500 SISTEMAS DE INFORMACIÓN II</li>
-    <li>TEL-500 TELEMÁTICA II</li>
-    <li>EMP-500 EMPRENDIMIENTO PRODUCTIVO I</li>
-    <li>TMG-500 TALLER DE MODALIDAD DE GRADUACIÓN I</li>
+<ul id="cursos-list">
+    <!-- Los cursos se cargarán aquí mediante JavaScript -->
 </ul>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $.ajax({
+                url: '@Url.Action("GetCursos", "Curso")',
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    var list = $('#cursos-list');
+                    list.empty();
+                    $.each(data, function (i, curso) {
+                        var item = '<li>' + curso.codigo + ' ' + curso.nombre + '</li>';
+                        list.append(item);
+                    });
+                }
+            });
+        });
+    </script>
+}

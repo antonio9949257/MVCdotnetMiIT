@@ -8,5 +8,14 @@ namespace MiIT.Controllers
         {
             return View();
         }
+
+        
+
+        [HttpGet]
+        public JsonResult GetDatosPersonales()
+        {
+            var datos = new { Nombre = "Armin Daniel Antonio Mendieta", Cedula = "9949257", Carrera = "Infomatica Industrial", Correo = "antonio9949257@gmail.com" };
+            return Json(datos);
+        }
     }
 }

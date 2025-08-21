@@ -3,9 +3,28 @@
 }
 
 <h2>Mis Datos Personales</h2>
-<ul>
-    <li>Nombre: Armin Daniel Antonio Mendieta</li>
-    <li>Cédula: 9949257</li>
-    <li>Carrera: Infomatica Industrial</li>
-    <li>Correo: antonio9949257@gmail.com</li>
+<ul id="datos-personales-list">
+    <!-- Los datos personales se cargarán aquí mediante JavaScript -->
 </ul>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Cargar datos personales
+            $.ajax({
+                url: '@Url.Action("GetDatosPersonales", "Seccion")',
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    var list = $('#datos-personales-list');
+                    list.empty();
+                    list.append('<li>Nombre: ' + data.nombre + '</li>');
+                    list.append('<li>Cédula: ' + data.cedula + '</li>');
+                    list.append('<li>Carrera: ' + data.carrera + '</li>');
+                    list.append('<li>Correo: ' + data.correo + '</li>');
+                }
+            });
+        });
+    </script>
+}
+
