@@ -106,3 +106,115 @@ El objetivo de estos módulos es permitir operaciones CRUD (Crear, Leer, Actuali
 5.  **Respuesta al Cliente**: El servidor envía el documento HTML completamente renderizado de vuelta al navegador del usuario, que lo muestra en la pantalla.
 
 Este mismo flujo se aplica de manera idéntica para `Periodo` y `Seccion`, donde cada controlador interactúa con sus vistas y modelos correspondientes.
+
+## Explicación Detallada: Navegación y Paso de Información
+
+Este proceso se puede dividir en 4 pasos clave.
+
+### Paso 1: La Petición (El "Salto" desde la Vista)
+
+Todo comienza cuando el usuario hace clic en un enlace. En ASP.NET Core MVC, estos enlaces no se escriben como HTML estático, sino que se usan "Tag Helpers" para generarlos dinámicamente.
+
+Línea clave en `Views/Shared/_Layout.cshtml`:
+
+```html
+<a class="nav-link text-dark" asp-area="" asp-controller="Curso" asp-action="Index">Curso</a>
+```
+
+- `asp-controller="Curso"`: Este es un "Tag Helper". Le dice a ASP.NET que este enlace debe apuntar a un controlador llamado `CursoController`. El sufijo `Controller` se omite por convención.
+- `asp-action="Index"`: Le dice a ASP.NET que debe invocar el método (la "acción") llamado `Index` dentro de ese controlador.
+- **Resultado final**: ASP.NET convierte esta línea en un enlace HTML estándar: `<a class="nav-link text-dark" href="/Curso/Index">Curso</a>`. El usuario ve la palabra "Curso" y al hacer clic, el navegador solicita la URL `/Curso/Index`.
+
+### Paso 2: El Enrutamiento (Cómo la Aplicación Sabe a Dónde Ir)
+
+Cuando la petición con la URL `/Curso/Index` llega al servidor, ASP.NET Core necesita saber qué código ejecutar. Esto se define en `Program.cs`.
+
+Línea clave en `Program.cs`:
+
+```csharp
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
+```
+
+- `pattern: "{controller=Home}/{action=Index}/{id?}"`: Esta es la plantilla que usa el sistema para interpretar las URLs entrantes.
+    - Toma la primera parte de la URL (`Curso`) y la asigna al parámetro `{controller}`.
+    - Toma la segunda parte (`Index`) y la asigna al parámetro `{action}`.
+    - El `{id?}` es opcional y se usaría para URLs como `/Curso/Details/5`.
+- **En resumen**: Esta línea le dice a la aplicación: "Una petición a `/Curso/Index` debe ser manejada por `CursoController` y su método `Index()`".
+
+### Paso 3: El Controlador (Pasando la Información)
+
+Ahora que la petición ha llegado al método `Index` en `CursoController`, el controlador necesita preparar los datos y pasárselos a la vista.
+
+**Código Conceptual en `Controllers/CursoController.cs`:**
+
+```csharp
+// 1. Se necesitaría un modelo para representar los datos.
+//    (Este archivo estaría en la carpeta Models/Curso.cs)
+public class Curso
+{
+    public int Id { get; set; }
+    public string Nombre { get; set; }
+}
+
+// 2. El controlador crearía y pasaría los datos.
+public class CursoController : Controller
+{
+    public IActionResult Index()
+    {
+        // Se crea una lista de objetos "Curso".
+        // En una aplicación real, estos datos vendrían de una base de datos.
+        var cursos = new List<Curso>
+        {
+            new Curso { Id = 1, Nombre = "Cálculo I" },
+            new Curso { Id = 2, Nombre = "Programación Avanzada" },
+            new Curso { Id = 3, Nombre = "Bases de Datos" }
+        };
+
+        // 3. La línea clave para pasar información:
+        //    Se pasa la lista de cursos como "modelo" a la vista.
+        return View(cursos);
+    }
+}
+```
+
+- `return View(cursos);`: Esta es la línea crucial. Le dice a ASP.NET: "Renderiza la vista `Index` que corresponde a este controlador, y entrégale esta lista de `cursos` para que pueda trabajar con ella".
+
+### Paso 4: La Vista (Recibiendo y Mostrando la Información)
+
+Finalmente, la vista `Index.cshtml` recibe la lista de cursos y la usa para generar el HTML.
+
+**Código Conceptual en `Views/Curso/Index.cshtml`:**
+
+```csharp
+@* 1. Se declara el tipo de modelo que la vista espera recibir. *@
+@model List<MiIT.Models.Curso>
+
+<h1>Lista de Cursos</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre del Curso</th>
+        </tr>
+    </thead>
+    <tbody>
+        @* 2. Se recorre la lista de cursos que el controlador pasó. *@
+        @foreach (var curso in Model)
+        {
+            <tr>
+                <td>@curso.Id</td>
+                <td>@curso.Nombre</td>
+            </tr>
+        }
+    </tbody>
+</table>
+```
+
+- `@model List<MiIT.Models.Curso>`: Esta directiva al inicio del archivo es fundamental. Declara que esta vista espera recibir un objeto que es una `List<Curso>`. Esto permite un tipado fuerte y autocompletado en el editor.
+- `@foreach (var curso in Model)`: Aquí es donde se accede a la información. La palabra `Model` (con 'M' mayúscula) es una propiedad especial que contiene el objeto que el controlador pasó. Este bucle itera sobre cada `curso` en la lista.
+- `@curso.Nombre`: Dentro del bucle, puedes acceder a las propiedades de cada objeto `curso` para mostrarlas en la tabla.
+
+Este ciclo completo (Navegación -> Enrutamiento -> Controlador -> Modelo -> Vista) es el núcleo del funcionamiento de una aplicación ASP.NET Core MVC.
