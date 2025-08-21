@@ -1,31 +1,14 @@
-@{
-    ViewBag.Title = "Curso";
-}
+@model IEnumerable<MiIT.Models.Curso>
+
+@{ViewBag.Title = "Curso";}
 
 <h2>Asignaturas actules: "En Curso"</h2>
 <p><strong>Año de Ingreso:</strong> 2023</p>
 
 <h3>Quinto Semestre</h3>
-<ul id="cursos-list">
-    <!-- Los cursos se cargarán aquí mediante JavaScript -->
+<ul>
+    @foreach (var curso in Model)
+    {
+        <li> @curso.Codigo @curso.Nombre</li>
+    }
 </ul>
-
-@section Scripts {
-    <script>
-        $(document).ready(function () {
-            $.ajax({
-                url: '@Url.Action("GetCursos", "Curso")',
-                type: 'GET',
-                dataType: 'json',
-                success: function (data) {
-                    var list = $('#cursos-list');
-                    list.empty();
-                    $.each(data, function (i, curso) {
-                        var item = '<li>' + curso.codigo + ' ' + curso.nombre + '</li>';
-                        list.append(item);
-                    });
-                }
-            });
-        });
-    </script>
-}

@@ -208,6 +208,7 @@ Este enfoque tiene varias ventajas:
     ```csharp
     [HttpGet]
     public JsonResult GetDatosPersonales()
+
     {
         var datos = new { Nombre = "Armin Daniel Antonio Mendieta", Cedula = "9949257", /* ... */ };
         return Json(datos);
@@ -362,3 +363,27 @@ public class Estudiante
 ```
 
 En resumen, las propiedades de C# son una característica potente que encapsula la lógica de acceso a los datos de un objeto, permitiendo un código más limpio, seguro y fácil de mantener.
+
+## Cambio a Renderizado de Datos en el Servidor (Server-Side Rendering)
+
+Para simplificar la arquitectura y mejorar el SEO, la carga de datos en los módulos de Cursos, Periodos y Sección ha sido refactorizada para utilizar un enfoque de renderizado en el servidor, eliminando la dependencia de JavaScript (jQuery AJAX) para la carga inicial de datos.
+
+### ¿Cómo Funciona Ahora?
+
+1.  **Modelos de Datos Claros:** Se han introducido clases de modelo específicas (`Curso`, `Materia`, `Periodo`, `DatosPersonales`) en la carpeta `Models/` para representar de forma estructurada los datos que se manejan.
+2.  **Controladores (Backend):**
+    *   Las acciones `Index()` en `CursoController.cs`, `PeridoController.cs` y `SeccionController.cs` ahora son responsables de obtener directamente los datos necesarios (los mismos datos que antes se devolvían vía `JsonResult`).
+    *   Estos datos se empaquetan en una instancia del modelo correspondiente y se pasan directamente a la vista utilizando `return View(modelo);`.
+    *   Los métodos `[HttpGet] JsonResult Get...()` que antes servían los datos vía AJAX han sido eliminados.
+3.  **Vistas (Frontend):**
+    *   Las vistas (`Views/Curso/Index.cshtml`, `Views/Periodo/Index.cshtml`, `Views/Seccion/Index.cshtml`) ahora declaran el tipo de modelo que esperan al inicio (`@model TipoDeModelo`).
+    *   Utilizan directamente la sintaxis Razor (`@foreach`, `@Model.Propiedad`) para iterar sobre los datos del modelo y generar el HTML completo en el servidor antes de enviarlo al navegador.
+    *   Las secciones `@section Scripts` que contenían las llamadas AJAX de jQuery han sido removidas.
+
+### Ventajas de este Enfoque:
+
+*   **Simplicidad:** Menos código JavaScript para la carga inicial de datos.
+*   **SEO Mejorado:** El contenido está disponible directamente en el HTML generado por el servidor, lo que facilita la indexación por parte de los motores de búsqueda.
+*   **Menos Dependencias:** Se reduce la dependencia de librerías JavaScript para la carga de datos.
+
+Este cambio asegura que la página se cargue con todos los datos ya presentes, sin necesidad de peticiones adicionales post-carga.

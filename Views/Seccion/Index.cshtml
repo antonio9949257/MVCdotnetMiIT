@@ -1,30 +1,12 @@
-@{
-    ViewData["Title"] = "Sección";
-}
+@model MiIT.Models.DatosPersonales
+
+@{ViewData["Title"] = "Sección";}
 
 <h2>Mis Datos Personales</h2>
-<ul id="datos-personales-list">
-    <!-- Los datos personales se cargarán aquí mediante JavaScript -->
+<ul>
+    <li>Nombre: @Model.Nombre</li>
+    <li>Cédula: @Model.Cedula</li>
+    <li>Carrera: @Model.Carrera</li>
+    <li>Correo: @Model.Correo</li>
 </ul>
-
-@section Scripts {
-    <script>
-        $(document).ready(function () {
-            // Cargar datos personales
-            $.ajax({
-                url: '@Url.Action("GetDatosPersonales", "Seccion")',
-                type: 'GET',
-                dataType: 'json',
-                success: function (data) {
-                    var list = $('#datos-personales-list');
-                    list.empty();
-                    list.append('<li>Nombre: ' + data.nombre + '</li>');
-                    list.append('<li>Cédula: ' + data.cedula + '</li>');
-                    list.append('<li>Carrera: ' + data.carrera + '</li>');
-                    list.append('<li>Correo: ' + data.correo + '</li>');
-                }
-            });
-        });
-    </script>
-}
 

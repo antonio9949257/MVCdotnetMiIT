@@ -1,37 +1,21 @@
-@{
-    ViewBag.Title = "Periodo";
-}
+@model IEnumerable<MiIT.Models.Periodo>
+
+@{ViewBag.Title = "Periodo";}
 
 <h2>Historial Académico</h2>
 <p><strong>Año de Ingreso:</strong> 2023</p>
 
 <div id="historial-academico">
-    <!-- El historial académico se cargará aquí mediante JavaScript -->
+    @foreach (var periodo in Model)
+    {
+        <h3>@periodo.Semestre</h3>
+        <ul>
+            @foreach (var materia in periodo.Materias)
+            {
+                <li>@materia.Codigo @materia.Nombre "@materia.Estado"</li>
+            }
+        </ul>
+    }
 </div>
-
-@section Scripts {
-    <script>
-        $(document).ready(function () {
-            $.ajax({
-                url: '@Url.Action("GetPeriodos", "Periodo")',
-                type: 'GET',
-                dataType: 'json',
-                success: function (data) {
-                    var container = $('#historial-academico');
-                    container.empty();
-                    $.each(data, function (i, semestre) {
-                        var semestreHtml = '<h3>' + semestre.semestre + '</h3>';
-                        semestreHtml += '<ul>';
-                        $.each(semestre.materias, function (j, materia) {
-                            semestreHtml += '<li>' + materia.codigo + ' ' + materia.nombre + '  "' + materia.estado + '"</li>';
-                        });
-                        semestreHtml += '</ul>';
-                        container.append(semestreHtml);
-                    });
-                }
-            });
-        });
-    </script>
-}
 
 
