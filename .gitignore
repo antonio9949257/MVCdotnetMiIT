@@ -1,0 +1,18 @@
+
+# Build artifacts
+[Bb]in/
+[Oo]bj/
+
+# User-specific files
+*.user
+*.suo
+appsettings.Development.json
+Properties/launchSettings.json
+
+# IDE/Editor specific files
+.vs/
+.vscode/
+.idea/
+
+# Log files
+*.log
