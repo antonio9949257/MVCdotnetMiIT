@@ -16,3 +16,7 @@ Properties/launchSettings.json
 
 # Log files
 *.log
+
+# Client-side libraries
+/wwwroot/lib/
+
