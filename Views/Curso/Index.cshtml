@@ -1,16 +1,43 @@
 @{
-    ViewBag.Title = "Curso";
+    ViewData["Title"] = "Cursos";
 }
 
-<h2>Asignaturas actules: "En Curso"</h2>
-<p><strong>Año de Ingreso:</strong> 2023</p>
+<h1>Cursos</h1>
 
-<h3>Quinto Semestre</h3>
-<ul>
-    <li>CAI-500 CONTROL Y AUTOMATIZACIÓN INDUSTRIAL II</li>
-    <li>TEW-500 TECNOLOGÍA WEB II</li>
-    <li>SII-500 SISTEMAS DE INFORMACIÓN II</li>
-    <li>TEL-500 TELEMÁTICA II</li>
-    <li>EMP-500 EMPRENDIMIENTO PRODUCTIVO I</li>
-    <li>TMG-500 TALLER DE MODALIDAD DE GRADUACIÓN I</li>
-</ul>
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Habilitado</th>
+        </tr>
+    </thead>
+    <tbody id="cursos-tbody">
+    </tbody>
+</table>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $.ajax({
+                url: "/Curso/CursosJson",
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    var tbody = $("#cursos-tbody");
+                    tbody.empty();
+                    $.each(data, function (i, item) {
+                        var row = "<tr>";
+                        row += "<td>" + item.idCurso + "</td>";
+                        row += "<td>" + item.nombre + "</td>";
+                        row += "<td>" + item.descripcion + "</td>";
+                        row += "<td>" + item.bhabilitado + "</td>";
+                        row += "</tr>";
+                        tbody.append(row);
+                    });
+                }
+            });
+        });
+    </script>
+}
