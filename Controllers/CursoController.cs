@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using MiIT.Models; // Added for Curso model
+using MiIT.Models;
 
 namespace MiIT.Controllers
 {
@@ -7,17 +7,21 @@ namespace MiIT.Controllers
     {
         public IActionResult Index()
         {
-            // Populate with the exact data from the previous GetCursos method
+            return View();
+        }
+
+        public JsonResult CursosJson()
+        {
             var cursos = new List<Curso>
             {
-                new Curso { Codigo = "CAI-500", Nombre = "CONTROL Y AUTOMATIZACIÓN INDUSTRIAL II" },
-                new Curso { Codigo = "TEW-500", Nombre = "TECNOLOGÍA WEB II" },
-                new Curso { Codigo = "SII-500", Nombre = "SISTEMAS DE INFORMACIÓN II" },
-                new Curso { Codigo = "TEL-500", Nombre = "TELEMÁTICA II" },
-                new Curso { Codigo = "EMP-500", Nombre = "EMPRENDIMIENTO PRODUCTIVO I" },
-                new Curso { Codigo = "TMG-500", Nombre = "TALLER DE MODALIDAD DE GRADUACIÓN I" }
+                new Curso { idCurso = 1, nombre = "CAI-500 CONTROL Y AUTOMATIZACIÓN INDUSTRIAL II", descripcion = "Descripción de CAI-500", bhabilitado = true },
+                new Curso { idCurso = 2, nombre = "TEW-500 TECNOLOGÍA WEB II", descripcion = "Descripción de TEW-500", bhabilitado = true },
+                new Curso { idCurso = 3, nombre = "SII-500 SISTEMAS DE INFORMACIÓN II", descripcion = "Descripción de SII-500", bhabilitado = true },
+                new Curso { idCurso = 4, nombre = "TEL-500 TELEMÁTICA II", descripcion = "Descripción de TEL-500", bhabilitado = true },
+                new Curso { idCurso = 5, nombre = "EMP-500 EMPRENDIMIENTO PRODUCTIVO I", descripcion = "Descripción de EMP-500", bhabilitado = true },
+                new Curso { idCurso = 6, nombre = "TMG-500 TALLER DE MODALIDAD DE GRADUACIÓN I", descripcion = "Descripción de TMG-500", bhabilitado = true }
             };
-            return View(cursos);
+            return Json(cursos);
         }
     }
 }

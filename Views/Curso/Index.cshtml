@@ -1,14 +1,43 @@
-@model IEnumerable<MiIT.Models.Curso>
+@{
+    ViewData["Title"] = "Cursos";
+}
 
-@{ViewBag.Title = "Curso";}
+<h1>Cursos</h1>
 
-<h2>Asignaturas actules: "En Curso"</h2>
-<p><strong>Año de Ingreso:</strong> 2023</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Habilitado</th>
+        </tr>
+    </thead>
+    <tbody id="cursos-tbody">
+    </tbody>
+</table>
 
-<h3>Quinto Semestre</h3>
-<ul>
-    @foreach (var curso in Model)
-    {
-        <li> @curso.Codigo @curso.Nombre</li>
-    }
-</ul>
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $.ajax({
+                url: "/Curso/CursosJson",
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    var tbody = $("#cursos-tbody");
+                    tbody.empty();
+                    $.each(data, function (i, item) {
+                        var row = "<tr>";
+                        row += "<td>" + item.idCurso + "</td>";
+                        row += "<td>" + item.nombre + "</td>";
+                        row += "<td>" + item.descripcion + "</td>";
+                        row += "<td>" + item.bhabilitado + "</td>";
+                        row += "</tr>";
+                        tbody.append(row);
+                    });
+                }
+            });
+        });
+    </script>
+}

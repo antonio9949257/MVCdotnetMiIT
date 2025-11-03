@@ -1,21 +1,46 @@
-@model IEnumerable<MiIT.Models.Periodo>
-
-@{ViewBag.Title = "Periodo";}
+@{
+    ViewData["Title"] = "Periodo";
+}
 
 <h2>Historial Académico</h2>
 <p><strong>Año de Ingreso:</strong> 2023</p>
 
-<div id="historial-academico">
-    @foreach (var periodo in Model)
-    {
-        <h3>@periodo.Semestre</h3>
-        <ul>
-            @foreach (var materia in periodo.Materias)
-            {
-                <li>@materia.Codigo @materia.Nombre "@materia.Estado"</li>
-            }
-        </ul>
-    }
-</div>
+<h3>Primer Semestre</h3>
+<ul>
+    <li>INT-100 INGLÉS TÉCNICO I  "aprobado"</li>
+    <li>FIS-100 FÍSICA APLICADA  "aprobado"</li>
+    <li>MCE-100 MEDIDAS Y CIRCUITOS ELECTRÓNICOS  "aprobado"</li>
+    <li>STI-100 SISTEMAS OPERATIVOS Y TECNOLOGÍA DE LA INFORMACIÓN  "aprobado"</li>
+    <li>PRG-100 PROGRAMACIÓN I  "aprobado"</li>
+    <li>ALG-100 ÁLGEBRA LINEAL  "aprobado"</li>
+</ul>
 
+<h3>Segundo Semestre</h3>
+<ul>
+    <li>INT-200 INGLÉS TÉCNICO II  "aprobado"</li>
+    <li>CAL-200 CÁLCULO APLICADO  "aprobado"</li>
+    <li>ELG-200 ELECTRÓNICA GENERAL I  "aprobado"</li>
+    <li>PRG-200 PROGRAMACIÓN II  "aprobado"</li>
+    <li>SID-200 SISTEMAS DIGITALES  "aprobado"</li>
+    <li>BDD-200 BASES DE DATOS I  "aprobado"</li>
+</ul>
 
+<h3>Tercer Semestre</h3>
+<ul>
+    <li>TEW-300 TECNOLOGÍA WEB I  "aprobado"</li>
+    <li>SIM-300 SISTEMAS MICROPROCESADOS  "aprobado"</li>
+    <li>ELG-300 ELECTRÓNICA GENERAL II  "aprobado"</li>
+    <li>PRG-300 PROGRAMACIÓN III  "aprobado"</li>
+    <li>ELT-300 ELECTROTÉCNIA INDUSTRIAL  "aprobado"</li>
+    <li>BDD-300 BASES DE DATOS II  "aprobado"</li>
+</ul>
+
+<h3>Cuarto Semestre</h3>
+<ul>
+    <li>CAI-400 CONTROL Y AUTOMATIZACIÓN INDUSTRIAL I  "aprobado"</li>
+    <li>MSI-400 MANTENIMIENTO DE SISTEMAS INDUSTRIALES  "aprobado"</li>
+    <li>SII-400 SISTEMAS DE INFORMACIÓN I  "aprobado"</li>
+    <li>TEL-400 TELEMÁTICA I  "aprobado"</li>
+    <li>PSM-400 PROGRAMACIÓN DE SISTEMAS MÓVILES  "aprobado"</li>
+    <li>DAC-400 DIBUJO ASISTIDO POR COMPUTADORA  "aprobado"</li>
+</ul>
