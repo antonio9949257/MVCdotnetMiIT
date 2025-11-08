@@ -1,4 +1,4 @@
-# Laboratorio 8: Corrección de Errores de Mapeo y Configuración en Entity Framework Core
+# Laboratorio 7: Corrección de Errores de Mapeo y Configuración en Entity Framework Core
 
 ## Objetivo
 
